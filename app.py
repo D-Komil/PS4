@@ -39,4 +39,3 @@ st.write(px.histogram(df_filtered,
                       color='manufacturer',
                       histnorm=histnorm,
                       barmode='overlay'))
-st.write(fig)
