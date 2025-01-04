@@ -12,30 +12,37 @@ if not show_manuf_1k_ads:
     df = df.groupby('manufacturer').filter(lambda x: len(x) > 1000)
 
 st.dataframe(df)
-st.header('Vehicle types by manufacturer')
-st.write(px.histogram(df, x='manufacturer', color='type'))
-st.header('Histogram of `condition` vs `model_year`')
+st.header('Car Condition by Milage')
 
-# histograms in plotly_express:
-st.write(px.histogram(df, x='model_year', color='condition'))
+# create a plotly histogram figure
+fig = px.histogram(df, x='odometer', color='condition')
 
-st.header('Compare price distribution between manufacturers')
-manufac_list = sorted(df['manufacturer'].unique())
-manufacturer_1 = st.selectbox('Select manufacturer 1',
-                              manufac_list, index=manufac_list.index('chevrolet'))
+# display the figure with streamlit
+st.write(fig)
 
-manufacturer_2 = st.selectbox('Select manufacturer 2',
-                              manufac_list, index=manufac_list.index('hyundai'))
-mask_filter = (df['manufacturer'] == manufacturer_1) | (df['manufacturer'] == manufacturer_2)
-df_filtered = df[mask_filter]
-normalize = st.checkbox('Normalize histogram', value=True)
-if normalize:
-    histnorm = 'percent'
-else:
-    histnorm = None
-st.write(px.histogram(df_filtered,
-                      x='price',
-                      nbins=30,
-                      color='manufacturer',
-                      histnorm=histnorm,
-                      barmode='overlay'))
+st.header('Model condition by Year')
+fig = px.histogram(df, x='model_year', color='condition')
+st.write(fig)
+
+# Filters
+manufacturer_filter = st.multiselect(
+    'Select Manufacturer', options=df['manufacturer'].unique(), default=df['manufacturer'].unique()
+)
+min_year, max_year = st.slider('Select Model Year Range', min_value=int(df['model_year'].min()), max_value=int(df['model_year'].max()), value=(int(df['model_year'].min()), int(df['model_year'].max())))
+price_filter = st.slider('Select Price Range', min_value=int(df['price'].min()), max_value=int(df['price'].max()), value=(int(df['price'].min()), int(df['price'].max())))
+odometer_filter = st.slider('Select Milage Range', min_value=int(df['odometer'].min()), max_value=int(df['odometer'].max()), value=(int(df['odometer'].min()), int(df['odometer'].max())))
+
+# Apply Filters
+filtered_df = df[
+    (df['manufacturer'].isin(manufacturer_filter)) &
+    (df['model_year'] >= min_year) &
+    (df['model_year'] <= max_year) &
+    (df['price'] >= price_filter[0]) &
+    (df['price'] <= price_filter[1]) &
+    (df['odometer'] >= odometer_filter[0]) &
+    (df['odometer'] <= odometer_filter[1])
+]
+
+# Display Filtered Table
+st.write("Filtered Table:")
+st.dataframe(filtered_df)
