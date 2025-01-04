@@ -6,10 +6,7 @@ import plotly.graph_objects as go
 df = pd.read_csv('vehicles_us.csv')
 df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
 
-st.header('Data viewer')
-show_manuf_1k_ads = st.checkbox('Include manufacturers with less than 1000 ads')
-if not show_manuf_1k_ads:
-    df = df.groupby('manufacturer').filter(lambda x: len(x) > 1000)
+st.header('Car sales advertisment')
 
 st.dataframe(df)
 st.header('Car Condition by Milage')
