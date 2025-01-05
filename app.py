@@ -10,19 +10,6 @@ st.header('Car sales advertisment')
 
 st.dataframe(df)
 
-st.header('Car Condition by Milage')
-
-# create a plotly histogram figure
-fig = px.histogram(df, x='odometer', color='condition')
-
-# display the figure with streamlit
-st.write(fig)
-
-st.header('Model condition by Year')
-
-fig = px.histogram(df, x='model_year', color='condition')
-st.write(fig)
-
 # Filters
 manufacturer_filter = st.multiselect(
     'Select Manufacturer', options=df['manufacturer'].unique(), default=df['manufacturer'].unique()
@@ -45,3 +32,31 @@ filtered_df = df[
 # Display Filtered Table
 st.write("Filtered Table:")
 st.dataframe(filtered_df)
+
+st.header('Car Condition by Milage')
+
+# create a plotly histogram figure
+fig = px.histogram(df, x='odometer', color='condition')
+
+# display the figure with streamlit
+st.write(fig)
+
+st.header('Model condition by Year')
+
+fig = px.histogram(df, x='model_year', color='condition')
+st.write(fig)
+
+# Scatter Plot
+st.header('Price vs Mileage Scatter Plot')
+
+scatter_fig = px.scatter(
+    filtered_df,
+    x='odometer',
+    y='price',
+    color='condition',
+    size='model_year',  # Optional, adjust size based on model year
+    hover_data=['manufacturer', 'model'],
+    title='Price vs Mileage by Condition'
+)
+
+st.write(scatter_fig)
