@@ -9,8 +9,9 @@ df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
 st.header('Car sales advertisment')
 
 st.dataframe(df)
-st.header('Car Condition by Milage')
 
+st.header('Car Condition by Milage')
+st.subheader("Show the dependency of a car's condition on the miles it has")
 # create a plotly histogram figure
 fig = px.histogram(df, x='odometer', color='condition')
 
@@ -18,6 +19,7 @@ fig = px.histogram(df, x='odometer', color='condition')
 st.write(fig)
 
 st.header('Model condition by Year')
+st.subheader("Show the dependency of a car's condition and the release year")
 fig = px.histogram(df, x='model_year', color='condition')
 st.write(fig)
 
