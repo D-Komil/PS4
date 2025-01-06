@@ -42,9 +42,16 @@ filtered_df = df[
     (df['odometer'] <= odometer_filter[1])
 ]
 
-# Display Filtered Table
-st.write("Filtered Table:")
-st.dataframe(filtered_df)
+# Checkbox to toggle between filtered and unfiltered data
+st.write("### Display Options")
+show_unfiltered = st.checkbox('Show Unfiltered Data')
+
+if show_unfiltered:
+    st.write("Unfiltered Table:")
+    st.dataframe(df)
+else:
+    st.write("Filtered Table:")
+    st.dataframe(filtered_df)
 
 st.header('Car Condition by Mileage')
 
