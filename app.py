@@ -56,13 +56,25 @@ else:
 st.header('Car Condition by Mileage')
 
 # Use filtered_df for the histogram
-fig = px.histogram(filtered_df, x='odometer', color='condition')
+fig = px.histogram(
+    filtered_df, 
+    x='odometer', 
+    color='condition',
+    title='Car Condition by Mileage',
+    labels={'odometer': 'Mileage (miles)', 'condition': 'Condition'}
+)
 st.write(fig)
 
 st.header('Model Condition by Year')
 
 # Use filtered_df for the histogram
-fig = px.histogram(filtered_df, x='model_year', color='condition')
+fig = px.histogram(
+    filtered_df, 
+    x='model_year', 
+    color='condition',
+    title='Model Condition by Year',
+    labels={'model_year': 'Model Year', 'condition': 'Condition'}
+)
 st.write(fig)
 
 st.header('Price vs Mileage Scatter Plot')
@@ -75,6 +87,7 @@ scatter_fig = px.scatter(
     color='condition',
     size='model_year',  # Optional, adjust size based on model year
     hover_data=['manufacturer', 'model'],
-    title='Price vs Mileage by Condition'
+    title='Price vs Mileage by Condition',
+    labels={'odometer': 'Mileage (miles)', 'price': 'Price ($)'}
 )
 st.write(scatter_fig)
