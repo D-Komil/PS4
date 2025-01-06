@@ -1,6 +1,6 @@
 # PS4
 Project Sprint 4
-runnable app link: https://ps4-mg0i.onrender.com
+To run the code, use the link: https://ps4-mg0i.onrender.com
 
 The project based on car sales dataset and used to
 show how the miles car has corelates with car condition,
