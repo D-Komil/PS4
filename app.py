@@ -1,22 +1,35 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 
+# Load the dataset
 df = pd.read_csv('vehicles_us.csv')
 df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
 
-st.header('Car sales advertisment')
-
-st.dataframe(df)
+st.header('Car Sales Advertisement')
 
 # Filters
 manufacturer_filter = st.multiselect(
     'Select Manufacturer', options=df['manufacturer'].unique(), default=df['manufacturer'].unique()
 )
-min_year, max_year = st.slider('Select Model Year Range', min_value=int(df['model_year'].min()), max_value=int(df['model_year'].max()), value=(int(df['model_year'].min()), int(df['model_year'].max())))
-price_filter = st.slider('Select Price Range', min_value=int(df['price'].min()), max_value=int(df['price'].max()), value=(int(df['price'].min()), int(df['price'].max())))
-odometer_filter = st.slider('Select Milage Range', min_value=int(df['odometer'].min()), max_value=int(df['odometer'].max()), value=(int(df['odometer'].min()), int(df['odometer'].max())))
+min_year, max_year = st.slider(
+    'Select Model Year Range', 
+    min_value=int(df['model_year'].min()), 
+    max_value=int(df['model_year'].max()), 
+    value=(int(df['model_year'].min()), int(df['model_year'].max()))
+)
+price_filter = st.slider(
+    'Select Price Range', 
+    min_value=int(df['price'].min()), 
+    max_value=int(df['price'].max()), 
+    value=(int(df['price'].min()), int(df['price'].max()))
+)
+odometer_filter = st.slider(
+    'Select Mileage Range', 
+    min_value=int(df['odometer'].min()), 
+    max_value=int(df['odometer'].max()), 
+    value=(int(df['odometer'].min()), int(df['odometer'].max()))
+)
 
 # Apply Filters
 filtered_df = df[
@@ -33,22 +46,21 @@ filtered_df = df[
 st.write("Filtered Table:")
 st.dataframe(filtered_df)
 
-st.header('Car Condition by Milage')
+st.header('Car Condition by Mileage')
 
-# create a plotly histogram figure
-fig = px.histogram(df, x='odometer', color='condition')
-
-# display the figure with streamlit
+# Use filtered_df for the histogram
+fig = px.histogram(filtered_df, x='odometer', color='condition')
 st.write(fig)
 
-st.header('Model condition by Year')
+st.header('Model Condition by Year')
 
-fig = px.histogram(df, x='model_year', color='condition')
+# Use filtered_df for the histogram
+fig = px.histogram(filtered_df, x='model_year', color='condition')
 st.write(fig)
 
-# Scatter Plot
 st.header('Price vs Mileage Scatter Plot')
 
+# Use filtered_df for the scatter plot
 scatter_fig = px.scatter(
     filtered_df,
     x='odometer',
@@ -58,5 +70,4 @@ scatter_fig = px.scatter(
     hover_data=['manufacturer', 'model'],
     title='Price vs Mileage by Condition'
 )
-
 st.write(scatter_fig)
